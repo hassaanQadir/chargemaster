@@ -1,5 +1,3 @@
-py -m pip install requests
-
 import requests
 
 r = requests.get('https://bayareahospital.org/patient-resources/')
