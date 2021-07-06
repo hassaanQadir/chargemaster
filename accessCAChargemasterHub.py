@@ -2,10 +2,14 @@ import requests
 
 targetURL = "https://data.chhs.ca.gov/dataset/0c315f3b-fc3c-4998-bd79-4659616c834d/resource/95e415ee-5c11-40b9-b693-ff9af7985a94/download/chargemaster-cdm-2020.zip"
 
-printThis = requests.get(targetURL)
+savedFile = requests.get(targetURL, stream = True)
 
-print(printThis.url)
+print(savedFile.url)
 
-savedFile = requests.get(targetURL)
+with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\theSavedFile.zip", "wb") as savedZip:
 
-open(""C:\Users\Qadir\Major Projects\Coding\Chargemaster\theSavedFile.zip"", "w").write(savedFile.content)
+	for chunk in savedFile.iter_content(chunk_size = 1024):
+
+		if chunk:
+
+			savedZip.write(chunk)
