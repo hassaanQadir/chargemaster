@@ -6,7 +6,7 @@ savedFile = requests.get(targetURL, stream = True)
 
 print(savedFile.url)
 
-with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\theSavedFile.zip", "w") as savedZip:
+with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\theSavedFile.zip", "wb") as savedZip:
 
 	for chunk in savedFile.iter_content(chunk_size = 1024):
 
