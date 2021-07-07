@@ -14,6 +14,6 @@ with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\CAChargemaste
 		if chunk:
 			savedZip.write(chunk)
 			
-with ZipFile('savedZip', 'r') as targetZip:
+with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\CAChargemasterSavedFile.zip", "r") as targetZip:
    # Extract all the contents of zip file in current directory
    targetZip.extractall()			
