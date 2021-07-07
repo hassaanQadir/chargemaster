@@ -1,6 +1,7 @@
 import requests
 from zipfile import ZipFile
 import pandas as pd
+import glob
 
 targetURL = "https://data.chhs.ca.gov/dataset/0c315f3b-fc3c-4998-bd79-4659616c834d/resource/95e415ee-5c11-40b9-b693-ff9af7985a94/download/chargemaster-cdm-2020.zip"
 
@@ -19,6 +20,11 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
    # Extract all the contents of zip file in current directory
    targetZip.extractall()	
 	
+	
+dhargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
+                   recursive = True)
+for chargemaster in chargemasters:
+    print(chargemaster)
 #iterate through the extracted folder the following{
 #open each child folder and append the name of the child to the grandchild file
 #copy grandchild file and bring to child-level of the original folder
