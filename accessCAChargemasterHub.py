@@ -26,6 +26,11 @@ chargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaste
 for chargemaster in chargemasters:
 	with open("listOfChargemasters.txt", "a") as text_file:
   	  text_file.write(chargemaster+"\n")
+	
+	theChargemaster = pd.read_excel (chargemaster)
+	print (thisChargemaster)
+	
+	
 
 #iterate through the extracted folder the following{
 #open each child folder and append the name of the child to the grandchild file
