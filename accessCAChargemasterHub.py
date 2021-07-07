@@ -7,7 +7,7 @@ downloadedFile = requests.get(targetURL, stream = True)
 
 print(downloadedFile.url)
 
-with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\CAChargemasterSavedFile.zip", "wb") as savedZip:
+with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\CAChargemasterSavedFile.zip", "wb") as savedZip:
 
 	for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
