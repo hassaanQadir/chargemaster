@@ -9,7 +9,7 @@ print(downloadedFile.url)
 
 with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\CAChargemasterSavedFile.zip", "wb") as savedZip:
 
-	for chunk in savedZip.iter_content(chunk_size = 1024):
+	for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
 		if chunk:
 			savedZip.write(chunk)
