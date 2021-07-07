@@ -24,8 +24,8 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
 chargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
                    recursive = True)
 for chargemaster in chargemasters:
-with open("listOfChargemasters.txt", "a") as text_file:
-    text_file.write(chargemaster+"\n")
+	with open("listOfChargemasters.txt", "a") as text_file:
+  	  text_file.write(chargemaster+"\n")
 
 #iterate through the extracted folder the following{
 #open each child folder and append the name of the child to the grandchild file
