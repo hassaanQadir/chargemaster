@@ -27,18 +27,10 @@ for chargemaster in chargemasters:
 	with open("listOfChargemasters.txt", "a") as text_file:
   	  text_file.write(chargemaster+"\n")
 	
-	theChargemaster = pd.read_excel (chargemaster)
+	thisChargemaster = pd.read_excel (chargemaster)
 	print (thisChargemaster)
 	
 	
-
-#iterate through the extracted folder the following{
-#open each child folder and append the name of the child to the grandchild file
-#copy grandchild file and bring to child-level of the original folder
-#delete the child folder}
-#then iterate through the new child files and read and print their excel files into one huge list
-
-
 #base code for reading and printing excel files{
 #allCAChargemasters = pd.read_excel (r"C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020")
 #print (allCAChargemasters)
