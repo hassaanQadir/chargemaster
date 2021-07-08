@@ -24,19 +24,26 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
    targetZip.extractall()	
 	
 #we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
-#a)we write the name of that file in a series of text files
-#b)we read that excel file, printing them all to one huge excel file
+#a)we use some counters to create multiple destination files
+#b)we write the name of that file in a text file
+#c)we read that excel file, printing them all to one huge excel file
 chargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
                    recursive = True)
+
+#a)				   
+i = 0 
+j = 0		
+		   
 for chargemaster in chargemasters:
-	#a)
-	i = 0
-	with open("listOfChargemasters%d.txt", % (i,) "a") as text_file:
-  	  text_file.write(chargemaster+"\n")
-	i += 1
+	j += 1
+	if (j % 5 == 0):
+		i += 1
+	
 	#b)
-	thisChargemaster = pd.read_excel (chargemaster)
-	thisChargemaster.to_excel('output.xlsx', 'Sheet1')
-	with pd.ExcelWriter('pandas_to_excel.xlsx') as writer:
-		thisChargemaster.to_excel(writer, sheet_name='sheet1')
-		thisChargemaster.to_excel(writer, sheet_name='sheet2')
+	with open("listOfChargemasters%d.txt" % i, "a") as text_file:
+  	  text_file.write(chargemaster+"\n")
+	
+	#c)
+	#thisChargemaster = pd.read_excel (chargemaster)
+	#with pd.ExcelWriter('pandas_to_excel%d.xlsx' % i,) as writer:
+	#	thisChargemaster.to_excel(writer, sheet_name='sheet')
