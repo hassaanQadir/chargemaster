@@ -23,19 +23,18 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
    # Extract all the contents of zip file in current directory
    targetZip.extractall()	
 	
-#we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx,
-#we write the name of that file in a text file and read the excel file, printing it to the command line
+#we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
+#a)we write the name of that file in a text file
+#b)we read that excel file, printing them all to one huge excel file
 chargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
                    recursive = True)
 for chargemaster in chargemasters:
+	#a)
 	with open("listOfChargemasters.txt", "a") as text_file:
   	  text_file.write(chargemaster+"\n")
-	
+	#b)
 	thisChargemaster = pd.read_excel (chargemaster)
-	print (thisChargemaster)
-	
-	
-#base code for reading and printing excel files{
-#allCAChargemasters = pd.read_excel (r"C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020")
-#print (allCAChargemasters)
-#}
+	thisChargemaster.to_excel('output.xlsx', 'Sheet1')
+	with pd.ExcelWriter('pandas_to_excel.xlsx') as writer:
+   		thisChargemaster.to_excel(writer, sheet_name='sheet1')
+    		thisChargemaster.to_excel(writer, sheet_name='sheet2')
