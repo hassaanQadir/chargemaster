@@ -27,23 +27,23 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
 #a)we use some counters to create multiple destination files
 #b)we write the name of that file in a text file
 #c)we read that excel file, printing them all to one huge excel file
-chargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
+excelChargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
                    recursive = True)
 
 #a)				   
 i = 0 
 j = 0		
 		   
-for chargemaster in chargemasters:
+for excelChargemaster in excelChargemasters:
 	j += 1
 	if (j % 5 == 0):
 		i += 1
 	
 	#b)
-	with open("listOfChargemasters%d.txt" % i, "a") as text_file:
-  	  text_file.write(chargemaster+"\n")
+	with open("listOfExcelChargemasters%d.txt" % i, "a") as text_file:
+  	  text_file.write(excelChargemaster+"\n")
 	
 	#c)
-	#thisChargemaster = pd.read_excel (chargemaster)
+	#thisExcelChargemaster = pd.read_excel (excelChargemaster)
 	#with pd.ExcelWriter('pandas_to_excel%d.xlsx' % i,) as writer:
-	#	thisChargemaster.to_excel(writer, sheet_name='sheet')
+	#	thisExcelChargemaster.to_excel(writer, sheet_name='sheet')
