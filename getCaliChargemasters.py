@@ -26,7 +26,6 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
 #we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
 #a)we use some counters to create multiple destination files
 #b)we write the name of that file in a text file
-#c)we read that excel file, printing them all to one huge excel file
 excelChargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
                    recursive = True)
 
@@ -42,8 +41,3 @@ for excelChargemaster in excelChargemasters:
 	#b)
 	with open("listOfExcelChargemasters%d.txt" % i, "a") as text_file:
   	  text_file.write(excelChargemaster+"\n")
-	
-	#c)
-	#thisExcelChargemaster = pd.read_excel (excelChargemaster)
-	#with pd.ExcelWriter('pandas_to_excel%d.xlsx' % i,) as writer:
-	#	thisExcelChargemaster.to_excel(writer, sheet_name='sheet')
