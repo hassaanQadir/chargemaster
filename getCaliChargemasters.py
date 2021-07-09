@@ -41,3 +41,11 @@ for excelChargemaster in excelChargemasters:
 	#b)
 	with open("listOfExcelChargemasters%d.txt" % i, "a") as text_file:
   	  text_file.write(excelChargemaster+"\n")
+	
+#so for each chargemaster, we search each sheet for the observation with the cdm code
+#then we copy that whole observation (but we only want the cdm code and the price, so maybe we don't have to copy the whole observation)
+#then we put that observation, along with a column telling us what hospital it came from (the hospital name is the folder name that the chargemaster is in)
+#put that observation in a dataframe
+#so we get a dataframe with all the observations related to the cdm code from each hospital
+#then we sort it by the charge, lowest to highest
+#inshallah
