@@ -55,8 +55,8 @@ for excelChargemaster in excelChargemasters:
 			form1045 = excelFileChargemaster.parse(sheetName)  # read a specific sheet to DataFrame
 			print(form1045.head().to_string(index=False))
 			#f)
-			with pd.ExcelWriter('combinedAB1045Forms.xlsx') as writer:
-				form1045.to_excel(writer, sheet_name=str(j))
+			#with pd.ExcelWriter('combinedAB1045Forms.xlsx') as writer:
+			#	form1045.to_excel(writer, sheet_name=str(j))
 
 #for each chargemaster, we search for a sheet containing "AB 1045"
 #for each of those chargemaster, we search each sheet for the observation with the cdm code
