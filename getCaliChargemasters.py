@@ -29,6 +29,7 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
 #c)we create an excel file object in panda, printing the names of them all for verification, 
 #d)then if the excel file contains a sheet with "1045" in its title, we add that sheet to a dataframe called form1045, and print it, then rinse and repeat for each excel file
 #f)trying to figure out a way that each excel file doesn't overwrite the same form1045 dataframe
+#e)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 excelChargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
                    recursive = True)
 
@@ -45,19 +46,24 @@ for excelChargemaster in excelChargemasters:
 	with open("listOfExcelChargemasters%d.txt" % i, "a") as text_file:
   	  text_file.write(excelChargemaster+"\n")
 	
-	#c)
-	excelFileChargemaster = pd.ExcelFile(excelChargemaster)
-	print(excelFileChargemaster.sheet_names)	# see all sheet names
-	#d)
-	sheetNames = excelFileChargemaster.sheet_names
-	for sheetName in sheetNames:
-		if "1045" in str(sheetName):
-			form1045 = excelFileChargemaster.parse(sheetName)  # read a specific sheet to DataFrame
-			print(form1045.head().to_string(index=False))
-			#f)
-			#with pd.ExcelWriter('combinedAB1045Forms.xlsx') as writer:
-			#	form1045.to_excel(writer, sheet_name=str(j))
-
+	#c
+	try:
+		excelFileChargemaster = pd.ExcelFile(excelChargemaster)
+		print(excelFileChargemaster.sheet_names)	# see all sheet names
+		#d)
+		sheetNames = excelFileChargemaster.sheet_names
+		for sheetName in sheetNames:
+			if "1045" in str(sheetName):
+				form1045 = excelFileChargemaster.parse(sheetName)  # read a specific sheet to DataFrame
+				print(form1045.head().to_string(index=False))
+				#f)
+				#with pd.ExcelWriter('combinedAB1045Forms.xlsx') as writer:
+				#	form1045.to_excel(writer, sheet_name=str(j))
+	#e)				
+	except:
+		thisChargemaster = str(excelChargemaster)
+		print("It seems " +thisChargemaster + " utilizes a font family numbered over 14")
+		pass
 #for each chargemaster, we search for a sheet containing "AB 1045"
 #for each of those chargemaster, we search each sheet for the observation with the cdm code
 #then we copy that whole observation (but we only want the cdm code and the price, so maybe we don't have to copy the whole observation)
