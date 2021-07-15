@@ -48,22 +48,23 @@ for excelChargemaster in excelChargemasters:
 		i += 1
 	
 	#b)
-	with open("listOfExcelChargemasters%d.txt" % i, "a") as text_file:
-  	  text_file.write(excelChargemaster+"\n")
+	#with open("listOfExcelChargemasters%d.txt" % i, "a") as text_file:
+  	  #text_file.write(excelChargemaster+"\n")
 	
 	#c
 	try:
 		excelFileChargemaster = pd.ExcelFile(excelChargemaster)
-		print(excelFileChargemaster.sheet_names)	# see all sheet names
+		#print(excelFileChargemaster.sheet_names)	# see all sheet names
 		#d)
 		sheetNames = excelFileChargemaster.sheet_names
 		for sheetName in sheetNames:
 			if "1045" in str(sheetName):
-				form1045 = excelFileChargemaster.parse(sheetName)  # read a specific sheet to DataFrame
-				print(form1045.head().to_string(index=False))
-				#f)
-				#with pd.ExcelWriter('combinedAB1045Forms.xlsx') as writer:
-				#	form1045.to_excel(writer, sheet_name=str(j))
+				df = excelFileChargemaster.parse(sheetName)
+				print(df.loc[df.iloc[:,1] == "74160"])
+				#f)#with open("contentChargemasters%d.txt" % i, "a") as text_file:
+					#text_file.write(form1045.head().to_string(index=False)+"\n")
+				#print(form1045.head().to_string(index=False))
+					
 	#e)				
 	except:
 		thisChargemaster = str(excelChargemaster)
