@@ -2,6 +2,7 @@ import requests
 from zipfile import ZipFile
 import pandas as pd
 import glob
+import os
 
 #this is the file which contains the chargemasters of all the California hospitals according to the CA state government
 targetURL = "https://data.chhs.ca.gov/dataset/0c315f3b-fc3c-4998-bd79-4659616c834d/resource/95e415ee-5c11-40b9-b693-ff9af7985a94/download/chargemaster-cdm-2020.zip"
@@ -10,8 +11,12 @@ targetURL = "https://data.chhs.ca.gov/dataset/0c315f3b-fc3c-4998-bd79-4659616c83
 downloadedFile = requests.get(targetURL, stream = True)
 print(downloadedFile.url)
 
+chromeOSPath = "unsure"
+windowsPath = "C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\"
+runtimeFolder = windowsPath
+
 #We download the supplied zip file into this location in chunks
-with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\CAChargemasterSavedFile.zip", "wb") as savedZip:
+with open(r"%sCAChargemasterSavedFile.zip" % (runtimeFolder), "wb") as savedZip:
 
 	for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
@@ -19,7 +24,7 @@ with open("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\CACh
 			savedZip.write(chunk)
 
 #We extract all the files from the zip file we just downloaded and put the extracted folder in the same directory
-with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\CAChargemasterSavedFile.zip", "r") as targetZip:
+with ZipFile(r"%sCAChargemasterSavedFile.zip" % (runtimeFolder), "r") as targetZip:
    # Extract all the contents of zip file in current directory
    targetZip.extractall()	
 	
@@ -30,7 +35,7 @@ with ZipFile("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\C
 #d)then if the excel file contains a sheet with "1045" in its title, we add that sheet to a dataframe called form1045, and print it, then rinse and repeat for each excel file
 #f)trying to figure out a way that each excel file doesn't overwrite the same form1045 dataframe
 #e)if the excel contains a font family with a value over 14 it causes an error which we corral over here
-excelChargemasters = glob.glob("C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\Chargemaster CDM 2020\\**\\*.xlsx", 
+excelChargemasters = glob.glob(r"%sChargemaster CDM 2020\\**\\*.xlsx" % (runtimeFolder),
                    recursive = True)
 
 #a)				   
