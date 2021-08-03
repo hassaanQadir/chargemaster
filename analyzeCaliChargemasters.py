@@ -4,6 +4,10 @@ import pandas as pd
 import glob
 import os
 
+chromeOSPath = "unsure"
+windowsPath = "C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\"
+runtimeFolder = windowsPath
+
 #we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
 #a)we use some counters to create multiple destination files
 #b)we write the name of that file in a text file
