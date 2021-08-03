@@ -8,53 +8,48 @@ chromeOSPath = "unsure"
 windowsPath = "C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\"
 runtimeFolder = windowsPath
 
-#we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
-#a)we use some counters to create multiple destination files
-#b)we write the name of that file in a text file
-#c)we create an excel file object in panda, printing the names of them all for verification, 
-#d)then if the excel file contains a sheet with "1045" in its title, we add that sheet to a dataframe called form1045, and print it, then rinse and repeat for each excel file
-#f)trying to figure out a way that each excel file doesn't overwrite the same form1045 dataframe
-#e)if the excel contains a font family with a value over 14 it causes an error which we corral over here
+#a)we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
+#b)for each chargemaster xlsx, we search for a sheet containing "1045"
+#c)we turn that sheet into a dataframe
+#d)we search that dataframe for the observation with the cdm code as a string
+#e)if the dataframe has the string version of the code we go to step print
+#f)if the dataframe does not have the string version it comes up as empty so we check if it has the integer version
+#g)then we print that whole observation
+#h)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 excelChargemasters = glob.glob(r"%sChargemaster CDM 2020\\**\\*.xlsx" % (runtimeFolder),
                    recursive = True)
 
-#a)				   
-i = 0 
-j = 0		
-		   
-for excelChargemaster in excelChargemasters:
-	j += 1
-	if (j % 5 == 0):
-		i += 1
+#a)	   
+for excelChargemaster in excelChargemasters:	
 	
-	#b)
-	#with open("listOfExcelChargemasters%d.txt" % i, "a") as text_file:
-  	  #text_file.write(excelChargemaster+"\n")
-	
-	#c
 	try:
 		excelFileChargemaster = pd.ExcelFile(excelChargemaster)
-		#print(excelFileChargemaster.sheet_names)	# see all sheet names
-		#d)
 		sheetNames = excelFileChargemaster.sheet_names
 		for sheetName in sheetNames:
+			#b)
 			if "1045" in str(sheetName):
+				#c)
 				df = excelFileChargemaster.parse(sheetName)
-				print(df.loc[df.iloc[:,1] == "74160"])
-				#f)#with open("contentChargemasters%d.txt" % i, "a") as text_file:
-					#text_file.write(form1045.head().to_string(index=False)+"\n")
-				#print(form1045.head().to_string(index=False))
+				#d)
+				procedureCodeString = r"99282"
+				procedureCodeInt = 99282
+				#e)
+				rowName = df.loc[:,"Unnamed: 1"] == procedureCodeString
+				finalRow = df.loc[rowName]
+				#f)
+				if finalRow.empty:
+					rowName = df.loc[:,"Unnamed: 1"] == procedureCodeInt
+					finalRow = df.loc[rowName]
+				#g)	
+				print(finalRow)
 					
-	#e)				
+	#h)				
 	except:
 		thisChargemaster = str(excelChargemaster)
 		print("It seems " +thisChargemaster + " utilizes a font family numbered over 14")
 		pass
-#for each chargemaster, we search for a sheet containing "AB 1045"
-#for each of those chargemaster, we search each sheet for the observation with the cdm code
-#then we copy that whole observation (but we only want the cdm code and the price, so maybe we don't have to copy the whole observation)
-#then we put that observation, along with a column telling us what hospital it came from (the hospital name is the folder name that the chargemaster is in)
-#put that observation in a dataframe
+
+
 #so we get a dataframe with all the observations related to the cdm code from each hospital
 #then we sort it by the charge, lowest to highest
 #inshallah
