@@ -53,3 +53,4 @@ for excelChargemaster in excelChargemasters:
 #so we get a dataframe with all the observations related to the cdm code from each hospital
 #then we sort it by the charge, lowest to highest
 #inshallah
+#DataFrame.sort_values
