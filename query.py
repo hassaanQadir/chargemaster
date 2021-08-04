@@ -61,7 +61,7 @@ for excelChargemaster in excelChargemasters:
 	#j)				
 	except:
 		thisChargemaster = str(excelChargemaster)
-		print("It seems " +thisChargemaster + " utilizes a font family numbered over 14")
+		print("Skipping " + thisChargemaster[-70:-20])
 		pass
 #k)
 allObservations = allObservations.sort_values(by="Charge", ascending=True)
