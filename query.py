@@ -5,7 +5,6 @@ import pandas as pd
 import glob
 import os
 
-procedureCode = 74160
 chromeOSPath = "unsure"
 windowsPath = "C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\"
 runtimeFolder = windowsPath
@@ -29,6 +28,7 @@ allObservations = pd.DataFrame()
 for excelChargemaster in excelChargemasters:	
 	
 	try:
+		procedureCode = sys.argv[1]
 		excelFileChargemaster = pd.ExcelFile(excelChargemaster)
 		sheetNames = excelFileChargemaster.sheet_names
 		for sheetName in sheetNames:
@@ -37,8 +37,8 @@ for excelChargemaster in excelChargemasters:
 				#c)
 				df = excelFileChargemaster.parse(sheetName)
 				#d)
-				procedureCodeString = r"%d" % (procedureCode)
-				procedureCodeInt = procedureCode
+				procedureCodeString = str(sys.argv[1])
+				procedureCodeInt = int(sys.argv[1])
 				#e)
 				rowName = df.loc[:,"Unnamed: 1"] == procedureCodeString
 				finalRow = df.loc[rowName]
