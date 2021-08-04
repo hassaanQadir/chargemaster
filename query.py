@@ -16,9 +16,10 @@ runtimeFolder = windowsPath
 #e)if the dataframe has the string version of the code we go to step print
 #f)if the dataframe does not have the string version it comes up as empty so we check if it has the integer version
 #g)the dataframe's first column is labeled after the hospital name so we take that name and place it as the value of the observation in the first column
-#h)we turn that observation into a dataframe with three specific column labels and concatenate that onto an ultimate dataframe for all the chargemasters
-#i)if the excel contains a font family with a value over 14 it causes an error which we corral over here
-#j)we sort, remove observations without charges, and print out the ultimate dataframe
+#h)makes sure all the charges are integers
+#i)we turn that observation into a dataframe with three specific column labels and concatenate that onto an ultimate dataframe for all the chargemasters
+#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
+#k)we sort, remove observations without charges, and print out the ultimate dataframe
 excelChargemasters = glob.glob(r"%sChargemaster CDM 2020\\**\\*.xlsx" % (runtimeFolder),
                    recursive = True)
 
@@ -52,15 +53,17 @@ for excelChargemaster in excelChargemasters:
 				hospitalName = columnList[0]
 				goalObservation.iloc[0,0] = hospitalName
 				#h)
+				goalObservation.iloc[0,2] = int(goalObservation.iloc[0,2])
+				#i)
 				goalObservation.columns = ["Procedure", "Code", "Charge"]
 				allObservations = pd.concat([allObservations, goalObservation], axis=0, join="outer", ignore_index=True,)
 				
-	#i)				
+	#j)				
 	except:
 		thisChargemaster = str(excelChargemaster)
 		print("It seems " +thisChargemaster + " utilizes a font family numbered over 14")
 		pass
-#j)
+#k)
 allObservations = allObservations.sort_values(by="Charge", ascending=True)
 allObservations = allObservations.dropna()
 print(allObservations)
