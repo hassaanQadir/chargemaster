@@ -1,9 +1,11 @@
+import sys
 import requests
 from zipfile import ZipFile
 import pandas as pd
 import glob
 import os
 
+procedureCode = 74160
 chromeOSPath = "unsure"
 windowsPath = "C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\"
 runtimeFolder = windowsPath
@@ -14,11 +16,15 @@ runtimeFolder = windowsPath
 #d)we search that dataframe for the observation with the cdm code as a string
 #e)if the dataframe has the string version of the code we go to step print
 #f)if the dataframe does not have the string version it comes up as empty so we check if it has the integer version
-#g)then we print that whole observation
-#h)if the excel contains a font family with a value over 14 it causes an error which we corral over here
+#g)the dataframe's first column is labeled after the hospital name so we take that name and place it as the value of the observation in the first column
+#h)we turn that observation into a dataframe with three specific column labels and concatenate that onto an ultimate dataframe for all the chargemasters
+#i)if the excel contains a font family with a value over 14 it causes an error which we corral over here
+#j)we sort, remove observations without charges, and print out the ultimate dataframe
 excelChargemasters = glob.glob(r"%sChargemaster CDM 2020\\**\\*.xlsx" % (runtimeFolder),
                    recursive = True)
 
+allObservations = pd.DataFrame()
+				   
 #a)	   
 for excelChargemaster in excelChargemasters:	
 	
@@ -31,8 +37,8 @@ for excelChargemaster in excelChargemasters:
 				#c)
 				df = excelFileChargemaster.parse(sheetName)
 				#d)
-				procedureCodeString = r"99282"
-				procedureCodeInt = 99282
+				procedureCodeString = r"%d" % (procedureCode)
+				procedureCodeInt = procedureCode
 				#e)
 				rowName = df.loc[:,"Unnamed: 1"] == procedureCodeString
 				finalRow = df.loc[rowName]
@@ -41,17 +47,24 @@ for excelChargemaster in excelChargemasters:
 					rowName = df.loc[:,"Unnamed: 1"] == procedureCodeInt
 					finalRow = df.loc[rowName]
 				#g)	
-				print(finalRow)
-					
-	#h)				
+				goalObservation = pd.DataFrame(finalRow)
+				columnList = goalObservation.columns.values.tolist()
+				hospitalName = columnList[0]
+				goalObservation.iloc[0,0] = hospitalName
+				#h)
+				goalObservation.columns = ["Procedure", "Code", "Charge"]
+				allObservations = pd.concat([allObservations, goalObservation], axis=0, join="outer", ignore_index=True,)
+				
+	#i)				
 	except:
 		thisChargemaster = str(excelChargemaster)
 		print("It seems " +thisChargemaster + " utilizes a font family numbered over 14")
 		pass
-
+#j)
+allObservations = allObservations.sort_values(by="Charge", ascending=True)
+allObservations = allObservations.dropna()
+print(allObservations)
 
 #so we get a dataframe with all the observations related to the cdm code from each hospital
 #then we sort it by the charge, lowest to highest
 #inshallah
-#DataFrame.sort_values
-#pd.concat(,axis=0)
