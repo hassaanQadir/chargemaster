@@ -42,6 +42,7 @@ else:
 	#i)we turn that observation into a dataframe with three specific column labels and concatenate that onto an ultimate dataframe for all the chargemasters
 	#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 	#k)we sort, remove observations without charges, and print out the ultimate dataframe
+	#l)convert the ultimate dataframe into an html table and create an html file with that table
 	excelChargemasters = glob.glob(r"%sChargemaster CDM 2020\\**\\*.xlsx" % (runtimeFolder),
 			   recursive = True)
 
@@ -89,3 +90,12 @@ else:
 	allObservations = allObservations.sort_values(by="Charge", ascending=True)
 	allObservations = allObservations.dropna()
 	print(allObservations)
+	#k)
+	allObservations = allObservations.sort_values(by="Charge", ascending=True,ignore_index=True)
+	allObservations = allObservations.dropna()
+	print(allObservations)	
+	#l)
+	htmlTable = allObservations.to_html(classes='table table-striped')
+	text_file = open("results.html", "w")
+	text_file.write(htmlTable)
+	text_file.close()
