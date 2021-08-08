@@ -5,7 +5,7 @@ import pandas as pd
 import glob
 import os
 
-command = input('Enter desired CPT code or type update to update chargemasters :')
+command = input('Enter desired CPT code or type "update" to update chargemasters : ')
 
 if command == "update":
 
