@@ -19,7 +19,7 @@ if sys.argv[1] == "update":
 	print(downloadedFile.url)
 
 	#We download the supplied zip file into this location in chunks
-	with open(r"%sCAChargemasterSavedFile.zip" % (runtimeFolder), "wb") as savedZip:
+	with open(r"CAChargemasterSavedFile.zip", "wb") as savedZip:
 
 		for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
@@ -27,7 +27,7 @@ if sys.argv[1] == "update":
 				savedZip.write(chunk)
 
 	#We extract all the files from the zip file we just downloaded and put the extracted folder in the same directory
-	with ZipFile(r"%sCAChargemasterSavedFile.zip" % (runtimeFolder), "r") as targetZip:
+	with ZipFile(r"CAChargemasterSavedFile.zip", "r") as targetZip:
 	   # Extract all the contents of zip file in current directory
 	   targetZip.extractall()
 else:
@@ -43,7 +43,7 @@ else:
 	#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 	#k)we sort, remove observations without charges, and print out the ultimate dataframe
 	#l)convert the ultimate dataframe into an html table and create an html file with that table
-	excelChargemasters = glob.glob(r"%sChargemaster CDM 2020\\**\\*.xlsx" % (runtimeFolder),
+	excelChargemasters = glob.glob(r"Chargemaster CDM 2020\\**\\*.xlsx",
 			   recursive = True)
 
 	allObservations = pd.DataFrame()
