@@ -5,11 +5,9 @@ import pandas as pd
 import glob
 import os
 
-chromeOSPath = "unsure"
-windowsPath = "C:\\Users\\Qadir\\Major Projects\\Coding\\Chargemaster\\Runtime\\"
-runtimeFolder = windowsPath
+command = input('Enter desired CPT code or type "update" to update chargemasters : ')
 
-if sys.argv[1] == "update":
+if command == "update":
 
 	#this is the file which contains the chargemasters of all the California hospitals according to the CA state government
 	targetURL = "https://data.chhs.ca.gov/dataset/0c315f3b-fc3c-4998-bd79-4659616c834d/resource/95e415ee-5c11-40b9-b693-ff9af7985a94/download/chargemaster-cdm-2020.zip"
@@ -52,7 +50,7 @@ else:
 	for excelChargemaster in excelChargemasters:	
 
 		try:
-			procedureCode = sys.argv[1]
+			procedureCode = command
 			excelFileChargemaster = pd.ExcelFile(excelChargemaster)
 			sheetNames = excelFileChargemaster.sheet_names
 			for sheetName in sheetNames:
@@ -61,8 +59,8 @@ else:
 					#c)
 					df = excelFileChargemaster.parse(sheetName)
 					#d)
-					procedureCodeString = str(sys.argv[1])
-					procedureCodeInt = int(sys.argv[1])
+					procedureCodeString = str(command)
+					procedureCodeInt = int(command)
 					#e)
 					rowName = df.loc[:,"Unnamed: 1"] == procedureCodeString
 					finalRow = df.loc[rowName]
