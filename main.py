@@ -1,3 +1,4 @@
+#install openpyxl
 import sys
 import requests
 from zipfile import ZipFile
@@ -17,7 +18,7 @@ if command == "update":
 	print(downloadedFile.url)
 
 	#We download the supplied zip file into this location in chunks
-	with open(r"CAChargemasterSavedFile.zip", "wb") as savedZip:
+	with open(r".venv/CAChargemasterSavedFile.zip", "wb") as savedZip:
 
 		for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
@@ -25,9 +26,9 @@ if command == "update":
 				savedZip.write(chunk)
 
 	#We extract all the files from the zip file we just downloaded and put the extracted folder in the same directory
-	with ZipFile(r"CAChargemasterSavedFile.zip", "r") as targetZip:
+	with ZipFile(r".venv/CAChargemasterSavedFile.zip", "r") as targetZip:
 	   # Extract all the contents of zip file in current directory
-	   targetZip.extractall()
+	   targetZip.extractall("/.venv")
 else:
 	#a)we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
 	#b)for each chargemaster xlsx, we search for a sheet containing "1045"
@@ -41,53 +42,48 @@ else:
 	#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 	#k)we sort, remove observations without charges, and print out the ultimate dataframe
 	#l)convert the ultimate dataframe into an html table and create an html file with that table
-	excelChargemasters = glob.glob(r"Chargemaster CDM 2020\\**\\*.xlsx",
-			   recursive = True)
+	excelChargemasters = glob.glob(r"/.venv/Chargemaster CDM 2020/**/*.xlsx", recursive = True)
 
 	allObservations = pd.DataFrame()
 
 	#a)	   
 	for excelChargemaster in excelChargemasters:	
+       
+            try:
+                procedureCode = command
+                excelFileChargemaster = pd.ExcelFile(excelChargemaster)
+                sheetNames = excelFileChargemaster.sheet_names
+                for sheetName in sheetNames:
+                    #b)
+                    if "1045" in str(sheetName):
+                        #c)
+                        df = excelFileChargemaster.parse(sheetName)
+                        #d)
+                        procedureCodeString = str(command)
+                        procedureCodeInt = int(command)
+                        #e)
+                        rowName = df.loc[:,"Unnamed: 1"] == procedureCodeString
+                        finalRow = df.loc[rowName]
+                        #f)
+                        if finalRow.empty:
+                            rowName = df.loc[:,"Unnamed: 1"] == procedureCodeInt
+                            finalRow = df.loc[rowName]
+                        #g)	
+                        goalObservation = pd.DataFrame(finalRow)
+                        columnList = goalObservation.columns.values.tolist()
+                        hospitalName = columnList[0]
+                        goalObservation.iloc[0,0] = hospitalName
+                        #h)
+                        goalObservation.iloc[0,2] = int(goalObservation.iloc[0,2])
+                        #i)
+                        goalObservation.columns = ["Procedure", "Code", "Charge"]
+                        allObservations = pd.concat([allObservations, goalObservation], axis=0, join="outer", ignore_index=True,)
 
-		try:
-			procedureCode = command
-			excelFileChargemaster = pd.ExcelFile(excelChargemaster)
-			sheetNames = excelFileChargemaster.sheet_names
-			for sheetName in sheetNames:
-				#b)
-				if "1045" in str(sheetName):
-					#c)
-					df = excelFileChargemaster.parse(sheetName)
-					#d)
-					procedureCodeString = str(command)
-					procedureCodeInt = int(command)
-					#e)
-					rowName = df.loc[:,"Unnamed: 1"] == procedureCodeString
-					finalRow = df.loc[rowName]
-					#f)
-					if finalRow.empty:
-						rowName = df.loc[:,"Unnamed: 1"] == procedureCodeInt
-						finalRow = df.loc[rowName]
-					#g)	
-					goalObservation = pd.DataFrame(finalRow)
-					columnList = goalObservation.columns.values.tolist()
-					hospitalName = columnList[0]
-					goalObservation.iloc[0,0] = hospitalName
-					#h)
-					goalObservation.iloc[0,2] = int(goalObservation.iloc[0,2])
-					#i)
-					goalObservation.columns = ["Procedure", "Code", "Charge"]
-					allObservations = pd.concat([allObservations, goalObservation], axis=0, join="outer", ignore_index=True,)
-
-		#j)				
-		except:
-			thisChargemaster = str(excelChargemaster)
-			print("Skipping " + thisChargemaster[-70:-20])
-			pass
-	#k)
-	allObservations = allObservations.sort_values(by="Charge", ascending=True)
-	allObservations = allObservations.dropna()
-	print(allObservations)
+            #j)				
+            except:
+                thisChargemaster = str(excelChargemaster)
+                print("Skipping " + thisChargemaster[-70:-20])
+                pass
 	#k)
 	allObservations = allObservations.sort_values(by="Charge", ascending=True,ignore_index=True)
 	allObservations = allObservations.dropna()
