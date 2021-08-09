@@ -5,6 +5,9 @@ from zipfile import ZipFile
 import pandas as pd
 import glob
 import os
+from flask import Flask
+
+app = Flask(__name__)
 
 command = input('Enter desired CPT code or type "update" to update chargemasters : ')
 
@@ -42,6 +45,7 @@ else:
 	#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 	#k)we sort, remove observations without charges, and print out the ultimate dataframe
 	#l)convert the ultimate dataframe into an html table and create an html file with that table
+	#m)send htmlTable to 127.0.0.2:5000 using Flask
 	excelChargemasters = glob.glob(r"/.venv/Chargemaster CDM 2020/**/*.xlsx", recursive = True)
 
 	allObservations = pd.DataFrame()
@@ -93,3 +97,7 @@ else:
 	text_file = open("results.html", "w")
 	text_file.write(htmlTable)
 	text_file.close()
+#m)	
+@app.route("/")
+def chargemasterTable():
+    return htmlTable
