@@ -21,7 +21,7 @@ if command == "update":
 	print(downloadedFile.url)
 
 	#We download the supplied zip file into this location in chunks
-	with open(r".venv/CAChargemasterSavedFile.zip", "wb") as savedZip:
+	with open(r"venv/CAChargemasterSavedFile.zip", "wb") as savedZip:
 
 		for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
