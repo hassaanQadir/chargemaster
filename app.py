@@ -9,6 +9,8 @@ from flask import Flask
 
 app = Flask(__name__)
 
+env = ""
+
 command = input('Enter desired CPT code or type "update" to update chargemasters : ')
 
 if command == "update":
@@ -21,7 +23,7 @@ if command == "update":
 	print(downloadedFile.url)
 
 	#We download the supplied zip file into this location in chunks
-	with open(r"venv/CAChargemasterSavedFile.zip", "wb") as savedZip:
+	with open(r"%sCAChargemasterSavedFile.zip" % (env), "wb") as savedZip:
 
 		for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
@@ -29,9 +31,9 @@ if command == "update":
 				savedZip.write(chunk)
 
 	#We extract all the files from the zip file we just downloaded and put the extracted folder in the same directory
-	with ZipFile(r"venv/CAChargemasterSavedFile.zip", "r") as targetZip:
+	with ZipFile(r"%sCAChargemasterSavedFile.zip" % (env), "r") as targetZip:
 	   # Extract all the contents of zip file in current directory
-	   targetZip.extractall("/venv")
+	   targetZip.extractall("")
 else:
 	#a)we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
 	#b)for each chargemaster xlsx, we search for a sheet containing "1045"
@@ -46,7 +48,7 @@ else:
 	#k)we sort, remove observations without charges, and print out the ultimate dataframe
 	#l)convert the ultimate dataframe into an html table and create an html file with that table
 	#m)send htmlTable to 127.0.0.2:5000 using Flask
-	excelChargemasters = glob.glob(r"/venv/Chargemaster CDM 2020/**/*.xlsx", recursive = True)
+	excelChargemasters = glob.glob(r"%sChargemaster CDM 2020/**/*.xlsx" % (env), recursive = True)
 
 	allObservations = pd.DataFrame()
 
