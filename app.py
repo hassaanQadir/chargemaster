@@ -8,19 +8,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route("/", methods=['GET', 'POST'])
-def index(form="theform"):
-	if request.method == 'POST':
-		if request.form.get('action1') == '99282':
-			tabulate("99282")
-			pass
-		elif  request.form.get('action2') == '74160':
-			tabulate("74160")
-			pass
-	elif request.method == 'GET':
-		return render_template('index.html', form=form)
-	
-	return render_template("index.html")
+env = ""
 
 #command = input('Enter desired CPT code or type "update" to update chargemasters : ')
 
@@ -35,7 +23,7 @@ def tabulate(command):
 		print(downloadedFile.url)
 
 		#We download the supplied zip file into this location in chunks
-		with open(r"CAChargemasterSavedFile.zip", "wb") as savedZip:
+		with open(r"%sCAChargemasterSavedFile.zip" % (env), "wb") as savedZip:
 
 			for chunk in downloadedFile.iter_content(chunk_size = 1024):
 
@@ -43,8 +31,8 @@ def tabulate(command):
 					savedZip.write(chunk)
 
 		#We extract all the files from the zip file we just downloaded and put the extracted folder in the same directory
-		with ZipFile(r"CAChargemasterSavedFile.zip", "r") as targetZip:
-		   # Extract all the contents of zip file in current directory
+		with ZipFile(r"%sCAChargemasterSavedFile.zip" % (env), "r") as targetZip:
+		   #Extract all the contents of zip file in current directory
 		   targetZip.extractall("")
 	else:
 		#a)we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
@@ -59,8 +47,7 @@ def tabulate(command):
 		#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 		#k)we sort, remove observations without charges, and print out the ultimate dataframe
 		#l)convert the ultimate dataframe into an html table and create an html file with that table
-		#m)send htmlTable to 127.0.0.2:5000 using Flask
-		excelChargemasters = glob.glob(r"Chargemaster CDM 2020/**/*.xlsx", recursive = True)
+		excelChargemasters = glob.glob(r"%sChargemaster CDM 2020/**/*.xlsx" % (env), recursive = True)
 
 		allObservations = pd.DataFrame()
 
@@ -112,3 +99,40 @@ def tabulate(command):
 		#text_file.write(htmlTable)
 		#text_file.close()
 		return (htmlTable)
+
+
+@app.route("/", methods=['GET', 'POST'])
+def index(form="theform"):
+	#if a button is pressed, check which one it is
+	if request.method == 'POST':
+		#if 99282 is pressed, search for that CPT code
+		if request.form.get('action1') == 'Emergency Room Visit Level 2 (low to moderate severity) 99282':
+			htmlTable = tabulate("99282")
+			return htmlTable
+			pass
+		#if 70450 is pressed, search for that CPT code and so on
+		elif  request.form.get('action2') == 'CT Scan Head or Brain, without contrast 70450':
+			htmlTable = tabulate("70450")
+			return htmlTable
+			pass
+		elif  request.form.get('action3') == 'CT Scan, Abodemen, with contrast 74160':
+			htmlTable = tabulate("74160")
+			return htmlTable
+			pass
+		elif  request.form.get('action4') == 'CT Scan, Pelvis, with contrast 72193':
+			htmlTable = tabulate("72193")
+			return htmlTable
+			pass
+		elif  request.form.get('action5') == 'Basic Metabolic Panel 80048':
+			htmlTable = tabulate("80048")
+			return htmlTable
+			pass	
+		elif  request.form.get('action6') == 'Lipid Panel 80061':
+			htmlTable = tabulate("80061")
+			return htmlTable
+			pass				
+	#if no button is pressed, show the buttons
+	elif request.method == 'GET':
+		return render_template('index.html', form=form)
+	
+	return render_template("index.html")
