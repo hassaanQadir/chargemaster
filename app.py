@@ -127,8 +127,8 @@ def index(form="theform"):
 			htmlTable = tabulate("80048")
 			return htmlTable
 			pass	
-		elif  request.form.get('action6') == 'Lipid Panel 80061':
-			htmlTable = tabulate("80061")
+		elif  request.form.get('action6') == 'Update Chargemasters':
+			htmlTable = tabulate("update")
 			return htmlTable
 			pass				
 	#if no button is pressed, show the buttons
