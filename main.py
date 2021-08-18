@@ -1,9 +1,7 @@
-import sys
 import requests
 from zipfile import ZipFile
 import pandas as pd
 import glob
-import os
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -51,11 +49,10 @@ def tabulate(command):
 
 		allObservations = pd.DataFrame()
 
-		#a)	   
-		for excelChargemaster in excelChargemasters:	
-		   
+		#a)
+		for excelChargemaster in excelChargemasters:
+
 				try:
-					procedureCode = command
 					excelFileChargemaster = pd.ExcelFile(excelChargemaster)
 					sheetNames = excelFileChargemaster.sheet_names
 					for sheetName in sheetNames:
@@ -73,7 +70,7 @@ def tabulate(command):
 							if finalRow.empty:
 								rowName = df.loc[:,"Unnamed: 1"] == procedureCodeInt
 								finalRow = df.loc[rowName]
-							#g)	
+							#g)
 							goalObservation = pd.DataFrame(finalRow)
 							columnList = goalObservation.columns.values.tolist()
 							hospitalName = columnList[0]
@@ -84,7 +81,7 @@ def tabulate(command):
 							goalObservation.columns = ["Procedure", "Code", "Charge"]
 							allObservations = pd.concat([allObservations, goalObservation], axis=0, join="outer", ignore_index=True,)
 
-				#j)				
+				#j)
 				except:
 					thisChargemaster = str(excelChargemaster)
 					print("Skipping " + thisChargemaster[-70:-20])
@@ -92,7 +89,7 @@ def tabulate(command):
 		#k)
 		allObservations = allObservations.sort_values(by="Charge", ascending=True,ignore_index=True)
 		allObservations = allObservations.dropna()
-		print(allObservations)	
+		print(allObservations)
 		#l)
 		htmlTable = allObservations.to_html(classes='table table-striped')
 		#text_file = open("results.html", "w")
@@ -126,13 +123,13 @@ def index(form="theform"):
 		elif  request.form.get('action5') == 'Basic Metabolic Panel 80048':
 			htmlTable = tabulate("80048")
 			return htmlTable
-			pass	
+			pass
 		elif  request.form.get('action6') == 'Update Chargemasters':
 			htmlTable = tabulate("update")
 			return htmlTable
-			pass				
+			pass
 	#if no button is pressed, show the buttons
 	elif request.method == 'GET':
 		return render_template('index.html', form=form)
-	
+
 	return render_template("index.html")
