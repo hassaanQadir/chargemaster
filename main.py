@@ -2,13 +2,13 @@ import requests
 from zipfile import ZipFile
 import pandas as pd
 import glob
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
 
-env = ""
+app.secret_key = '003137c84027b5533c98a6c763adf1ab455303c5e1'
 
-#command = input('Enter desired CPT code or type "update" to update chargemasters : ')
+env = ""
 
 def tabulate(command):
 	if command == "update":
@@ -92,9 +92,6 @@ def tabulate(command):
 		print(allObservations)
 		#l)
 		htmlTable = allObservations.to_html(classes='table table-striped')
-		#text_file = open("results.html", "w")
-		#text_file.write(htmlTable)
-		#text_file.close()
 		return (htmlTable)
 
 
@@ -105,24 +102,29 @@ def index(form="theform"):
 		#if 99282 is pressed, search for that CPT code
 		if request.form.get('action1') == 'Emergency Room Visit Level 2 (low to moderate severity) 99282':
 			htmlTable = tabulate("99282")
-			return htmlTable
+			session['htmlTable'] = htmlTable
+			return redirect(url_for("display"))
 			pass
 		#if 70450 is pressed, search for that CPT code and so on
 		elif  request.form.get('action2') == 'CT Scan Head or Brain, without contrast 70450':
 			htmlTable = tabulate("70450")
-			return htmlTable
+			session['htmlTable'] = htmlTable
+			return redirect(url_for("display"))
 			pass
 		elif  request.form.get('action3') == 'CT Scan, Abodemen, with contrast 74160':
 			htmlTable = tabulate("74160")
-			return htmlTable
+			session['htmlTable'] = htmlTable
+			return redirect(url_for("display"))
 			pass
 		elif  request.form.get('action4') == 'CT Scan, Pelvis, with contrast 72193':
 			htmlTable = tabulate("72193")
-			return htmlTable
+			session['htmlTable'] = htmlTable
+			return redirect(url_for("display"))
 			pass
 		elif  request.form.get('action5') == 'Basic Metabolic Panel 80048':
 			htmlTable = tabulate("80048")
-			return htmlTable
+			session['htmlTable'] = htmlTable
+			return redirect(url_for("display"))
 			pass
 		elif  request.form.get('action6') == 'Update Chargemasters':
 			htmlTable = tabulate("update")
@@ -133,3 +135,8 @@ def index(form="theform"):
 		return render_template('index.html', form=form)
 
 	return render_template("index.html")
+
+@app.route('/result')
+def display():
+    htmlTable = session.get('htmlTable', None)
+    return htmlTable
