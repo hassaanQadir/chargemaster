@@ -2,13 +2,41 @@ import requests
 from zipfile import ZipFile
 import pandas as pd
 import glob
+import os
 from flask import Flask, render_template, request, redirect, url_for, session
+from geopy.geocoders import Nominatim
+import time
+
 
 app = Flask(__name__)
 
 app.secret_key = '003137c84027b5533c98a6c763adf1ab455303c5e1'
 
 env = ""
+
+def inRange():
+    with os.scandir(r"Chargemaster CDM 2020") as CAFolders:
+        for subfolder in CAFolders:
+            if subfolder.is_dir():
+                hospitalName = str(subfolder.name)
+                print(hospitalName)
+                #Google Place API
+
+                #SmartyStreets
+
+
+                #Nominatim
+                try:
+                    loc = Nominatim(user_agent="GetLoc")
+                    getLoc = loc.geocode(hospitalName)
+                    print(getLoc.address)
+                    time.sleep(1)
+                    print("Longitude = ", getLoc.longitude)
+                    print("Latitude = ", getLoc.latitude, "\n")
+                except(AttributeError):
+                    print("Couldn't find address")
+                    pass
+inRange()
 
 def tabulate(command):
 	if command == "update":
