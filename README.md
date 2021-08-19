@@ -11,4 +11,4 @@ User goes to the website, it calls app.yaml which serves index.html. User choose
 
 main.py has the functionality to download and parse a list containing all of California's chargemasters but for now I've manually uploaded five.
 
-main.py takes the CPT code and seraches for every chargemaster that contains that procedure. Each observation that matches is put into one dataframe that is ranked by price low-to-high. That dataframe is served as an html table.
+main.py takes the CPT code and seraches for every chargemaster that contains that procedure. Each observation that matches is put into one dataframe that is ranked by price low-to-high. That dataframe is served as an html table on a different page.
