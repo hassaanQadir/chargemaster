@@ -5,7 +5,7 @@ import glob
 import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from geopy.geocoders import Nominatim
-import time
+from geopy.extra.rate_limiter import RateLimiter
 
 
 app = Flask(__name__)
@@ -14,29 +14,32 @@ app.secret_key = '003137c84027b5533c98a6c763adf1ab455303c5e1'
 
 env = ""
 
-def inRange():
+def createLocationList():
+    #go through each subfolder in the folder of hospitals and add the name of that subfolder/hospital to a list
     with os.scandir(r"Chargemaster CDM 2020") as CAFolders:
+        nameList = []
         for subfolder in CAFolders:
             if subfolder.is_dir():
-                hospitalName = str(subfolder.name)
-                print(hospitalName)
-                #Google Place API
+                hospitalName = (subfolder.name)
+                nameList.append(hospitalName)
 
-                #SmartyStreets
+    #put that list of names through a geocoder to end up with a dataframe of each hospital with its latitude and longitude
+    df = pd.DataFrame({'name': nameList})
+    geolocator = Nominatim(user_agent="chargemaster")
+    geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
+    df['location'] = df['name'].apply(geocode)
+    df['point'] = df['location'].apply(lambda loc: tuple(loc.point) if loc else None)
+    dfNames = df['name']
+    dfLocs = df['point']
+    dfNameLocs = pd.concat([dfNames,dfLocs], axis = 1)
 
+    #take the dataframe with hospitals and lat/long and put pickle it for use by inRange()
+    dfNameLocs.to_pickle("locationList.pkl")
 
-                #Nominatim
-                try:
-                    loc = Nominatim(user_agent="GetLoc")
-                    getLoc = loc.geocode(hospitalName)
-                    print(getLoc.address)
-                    time.sleep(1)
-                    print("Longitude = ", getLoc.longitude)
-                    print("Latitude = ", getLoc.latitude, "\n")
-                except(AttributeError):
-                    print("Couldn't find address")
-                    pass
-inRange()
+def inRange():
+    locationList = pd.read_pickle("locationList.pkl")
+    pass
+    #check if the hospital is within the distance and if true, send to a folder for tabulate() to work with
 
 def tabulate(command):
 	if command == "update":
