@@ -3,9 +3,11 @@ from zipfile import ZipFile
 import pandas as pd
 import glob
 import os
+import shutil
 from flask import Flask, render_template, request, redirect, url_for, session
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
+from geopy import distance
 
 
 app = Flask(__name__)
@@ -13,6 +15,8 @@ app = Flask(__name__)
 app.secret_key = '003137c84027b5533c98a6c763adf1ab455303c5e1'
 
 env = ""
+
+inRangeHospitals = "/home/hassaanQadir/.virtualenvs/inRangeHospitals"
 
 def createLocationList():
     #go through each subfolder in the folder of hospitals and add the name of that subfolder/hospital to a list
@@ -37,9 +41,42 @@ def createLocationList():
     dfNameLocs.to_pickle("locationList.pkl")
 
 def inRange():
+    userLocation = (34.0083, -118.4179, 0.0)
+    setRange = 3000
     locationList = pd.read_pickle("locationList.pkl")
-    pass
-    #check if the hospital is within the distance and if true, send to a folder for tabulate() to work with
+    nearbyHospitals = pd.DataFrame()
+
+    for i in range(len(locationList)) :
+       #print(locationList.iloc[i, 0], locationList.iloc[i, 1])
+        #evaluates distance between user and hospital
+        targetDistance = distance.distance(userLocation, locationList.iloc[i, 1]).miles
+        #if distance is within prescribed range, the hospital/point observation goes into another dataframe
+        if targetDistance < setRange:
+            nearbyHospitals = nearbyHospitals.append(locationList.iloc[i], ignore_index=True,)
+        else:
+            pass
+
+    #create a list of nearby hospitals from the new dataframe
+    nearbyHospitalNames = []
+    for i in range(len(nearbyHospitals)):
+        nearbyHospitalNames.append(nearbyHospitals.iloc[i,0])
+	
+    #add directory if its name is on the list
+    with os.scandir(r"Chargemaster CDM 2020") as CAFolders:
+            nearbyHospitalDirectories = []
+            for subfolder in CAFolders:
+                if subfolder.is_dir():
+                    if str(subfolder.name) in nearbyHospitalNames:
+                        nearbyHospitalDirectories.append(subfolder.path)
+                    else:
+                        pass
+		
+    #populate inRangeHospitals folder with only the information of nearby hospitals for tabulate() to work with
+    if os.path.exists(inRangeHospitals):
+        shutil.rmtree(inRangeHospitals)
+    for j in range(len(nearbyHospitalDirectories)):
+        shutil.copytree(nearbyHospitalDirectories[j], inRangeHospitals)
+
 
 def tabulate(command):
 	if command == "update":
@@ -64,7 +101,7 @@ def tabulate(command):
 		   #Extract all the contents of zip file in current directory
 		   targetZip.extractall("")
 	else:
-		#a)we go through the extracted folder and, for every file that is in the Chargemaster CDM 2020 folder, as well as another unspecified folder, and is an xlsx:
+		#a)we go through the extracted folder and, for every file that is in the inRangeHospitals folder, as well as another unspecified folder, and is an xlsx:
 		#b)for each chargemaster xlsx, we search for a sheet containing "1045"
 		#c)we turn that sheet into a dataframe
 		#d)we search that dataframe for the observation with the cdm code as a string
@@ -76,7 +113,7 @@ def tabulate(command):
 		#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 		#k)we sort, remove observations without charges, and print out the ultimate dataframe
 		#l)convert the ultimate dataframe into an html table and create an html file with that table
-		excelChargemasters = glob.glob(r"%sChargemaster CDM 2020/**/*.xlsx" % (env), recursive = True)
+		excelChargemasters = glob.glob(r"%sinRangeHospitals/*.xlsx" % (env), recursive = True)
 
 		allObservations = pd.DataFrame()
 
