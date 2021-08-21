@@ -40,16 +40,17 @@ def createLocationList():
     #take the dataframe with hospitals and lat/long and put pickle it for use by inRange()
     dfNameLocs.to_pickle("locationList.pkl")
 
-def inRange():
-    userLocation = (34.0083, -118.4179, 0.0)
-    setRange = 3000
+def inRange(userLocation):
+    userLocation = userLocation
+    setRange = 30
     locationList = pd.read_pickle("locationList.pkl")
     nearbyHospitals = pd.DataFrame()
 
     for i in range(len(locationList)) :
-       #print(locationList.iloc[i, 0], locationList.iloc[i, 1])
+
         #evaluates distance between user and hospital
         targetDistance = distance.distance(userLocation, locationList.iloc[i, 1]).miles
+        print(locationList.iloc[i,1])
         #if distance is within prescribed range, the hospital/point observation goes into another dataframe
         if targetDistance < setRange:
             nearbyHospitals = nearbyHospitals.append(locationList.iloc[i], ignore_index=True,)
@@ -60,7 +61,7 @@ def inRange():
     nearbyHospitalNames = []
     for i in range(len(nearbyHospitals)):
         nearbyHospitalNames.append(nearbyHospitals.iloc[i,0])
-	
+    print(nearbyHospitalNames)
     #add directory if its name is on the list
     with os.scandir(r"Chargemaster CDM 2020") as CAFolders:
             nearbyHospitalDirectories = []
@@ -68,15 +69,15 @@ def inRange():
                 if subfolder.is_dir():
                     if str(subfolder.name) in nearbyHospitalNames:
                         nearbyHospitalDirectories.append(subfolder.path)
+                        print(subfolder.name)
                     else:
                         pass
-		
+
     #populate inRangeHospitals folder with only the information of nearby hospitals for tabulate() to work with
     if os.path.exists(inRangeHospitals):
         shutil.rmtree(inRangeHospitals)
     for j in range(len(nearbyHospitalDirectories)):
-        shutil.copytree(nearbyHospitalDirectories[j], inRangeHospitals)
-
+        shutil.copytree(nearbyHospitalDirectories[j],"/home/hassaanQadir/.virtualenvs/inRangeHospitals/%s" % j)
 
 def tabulate(command):
 	if command == "update":
@@ -113,7 +114,7 @@ def tabulate(command):
 		#j)if the excel contains a font family with a value over 14 it causes an error which we corral over here
 		#k)we sort, remove observations without charges, and print out the ultimate dataframe
 		#l)convert the ultimate dataframe into an html table and create an html file with that table
-		excelChargemasters = glob.glob(r"%sinRangeHospitals/*.xlsx" % (env), recursive = True)
+		excelChargemasters = glob.glob(r"%sinRangeHospitals/**/*.xlsx" % (env), recursive = True)
 
 		allObservations = pd.DataFrame()
 
@@ -168,35 +169,43 @@ def index(form="theform"):
 	#if a button is pressed, check which one it is
 	if request.method == 'POST':
 		#if 99282 is pressed, search for that CPT code
-		if request.form.get('action1') == 'Emergency Room Visit Level 2 (low to moderate severity) 99282':
+		if request.form.get('99282') == 'Emergency Room Visit Level 2 (low to moderate severity) 99282':
 			htmlTable = tabulate("99282")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
 		#if 70450 is pressed, search for that CPT code and so on
-		elif  request.form.get('action2') == 'CT Scan Head or Brain, without contrast 70450':
+		elif  request.form.get('70450') == 'CT Scan Head or Brain, without contrast 70450':
 			htmlTable = tabulate("70450")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('action3') == 'CT Scan, Abodemen, with contrast 74160':
+		elif  request.form.get('74160') == 'CT Scan, Abodemen, with contrast 74160':
 			htmlTable = tabulate("74160")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('action4') == 'CT Scan, Pelvis, with contrast 72193':
+		elif  request.form.get('72193') == 'CT Scan, Pelvis, with contrast 72193':
 			htmlTable = tabulate("72193")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('action5') == 'Basic Metabolic Panel 80048':
+		elif  request.form.get('80048') == 'Basic Metabolic Panel 80048':
 			htmlTable = tabulate("80048")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('action6') == 'Update Chargemasters':
-			htmlTable = tabulate("update")
-			return htmlTable
+		elif  request.form.get('update') == 'Update Chargemasters':
+			tabulate("update")
+			return render_template('index.html', form=form)
+			pass
+		elif  request.form.get('sanfrancisco') == 'Location: San Francisco':
+			inRange("37.7749, -122.4194")
+			return render_template('index.html', form=form)
+			pass
+		elif  request.form.get('losangeles') == 'Location: Los Angeles':
+			inRange("34.0522, -118.2437")
+			return render_template('index.html', form=form)
 			pass
 	#if no button is pressed, show the buttons
 	elif request.method == 'GET':
