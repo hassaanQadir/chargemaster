@@ -42,7 +42,7 @@ def createLocationList():
 
 def inRange(userLocation):
     userLocation = userLocation
-    setRange = 30
+    setRange = 10
     locationList = pd.read_pickle("locationList.pkl")
     nearbyHospitals = pd.DataFrame()
 
@@ -62,22 +62,12 @@ def inRange(userLocation):
     for i in range(len(nearbyHospitals)):
         nearbyHospitalNames.append(nearbyHospitals.iloc[i,0])
     print(nearbyHospitalNames)
-    #add directory if its name is on the list
-    with os.scandir(r"Chargemaster CDM 2020") as CAFolders:
-            nearbyHospitalDirectories = []
-            for subfolder in CAFolders:
-                if subfolder.is_dir():
-                    if str(subfolder.name) in nearbyHospitalNames:
-                        nearbyHospitalDirectories.append(subfolder.path)
-                        print(subfolder.name)
-                    else:
-                        pass
 
     #populate inRangeHospitals folder with only the information of nearby hospitals for tabulate() to work with
     if os.path.exists(inRangeHospitals):
         shutil.rmtree(inRangeHospitals)
-    for j in range(len(nearbyHospitalDirectories)):
-        shutil.copytree(nearbyHospitalDirectories[j],"/home/hassaanQadir/.virtualenvs/inRangeHospitals/%s" % j)
+    for j in range(len(nearbyHospitalNames)):
+        shutil.copytree("Chargemaster CDM 2020/%s" % (nearbyHospitalNames[j]),"/home/hassaanQadir/.virtualenvs/inRangeHospitals/%s" % (j))
 
 def tabulate(command):
 	if command == "update":
@@ -197,6 +187,7 @@ def index(form="theform"):
 			pass
 		elif  request.form.get('update') == 'Update Chargemasters':
 			tabulate("update")
+			createLocationList()
 			return render_template('index.html', form=form)
 			pass
 		elif  request.form.get('sanfrancisco') == 'Location: San Francisco':
