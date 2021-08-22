@@ -42,7 +42,7 @@ def createLocationList():
 
 def inRange(userLocation):
     userLocation = userLocation
-    setRange = 10
+    setRange = 30
     locationList = pd.read_pickle("locationList.pkl")
     nearbyHospitals = pd.DataFrame()
 
