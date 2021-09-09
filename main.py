@@ -7,7 +7,7 @@ import shutil
 from flask import Flask, render_template, request, redirect, url_for, session
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-from geopy import distance
+from geopy import distance, Point
 
 
 app = Flask(__name__)
@@ -159,44 +159,44 @@ def index(form="theform"):
 	#if a button is pressed, check which one it is
 	if request.method == 'POST':
 		#if 99282 is pressed, search for that CPT code
-		if request.form.get('99282') == 'Emergency Room Visit Level 2 (low to moderate severity) 99282':
+		if request.form.get('99282'):
 			htmlTable = tabulate("99282")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
 		#if 70450 is pressed, search for that CPT code and so on
-		elif  request.form.get('70450') == 'CT Scan Head or Brain, without contrast 70450':
+		elif  request.form.get('70450'):
 			htmlTable = tabulate("70450")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('74160') == 'CT Scan, Abodemen, with contrast 74160':
+		elif  request.form.get('74160'):
 			htmlTable = tabulate("74160")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('72193') == 'CT Scan, Pelvis, with contrast 72193':
+		elif  request.form.get('72193'):
 			htmlTable = tabulate("72193")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('80048') == 'Basic Metabolic Panel 80048':
+		elif  request.form.get('80048'):
 			htmlTable = tabulate("80048")
 			session['htmlTable'] = htmlTable
 			return redirect(url_for("display"))
 			pass
-		elif  request.form.get('update') == 'Update Chargemasters':
+		elif  request.form.get('update'):
 			tabulate("update")
 			createLocationList()
 			return render_template('index.html', form=form)
 			pass
-		elif  request.form.get('sanfrancisco') == 'Location: San Francisco':
-			inRange("37.7749, -122.4194")
-			return render_template('index.html', form=form)
-			pass
-		elif  request.form.get('losangeles') == 'Location: Los Angeles':
-			inRange("34.0522, -118.2437")
-			return render_template('index.html', form=form)
+		elif  request.form.get('update location'):
+		    userLocation = Point(request.form.get('location'))
+		    inRange(userLocation)
+		    return render_template('index.html', form=form)
+		    pass
+		elif  request.form.get('blog'):
+			return redirect(url_for("blog"))
 			pass
 	#if no button is pressed, show the buttons
 	elif request.method == 'GET':
@@ -208,3 +208,8 @@ def index(form="theform"):
 def display():
     htmlTable = session.get('htmlTable', None)
     return htmlTable
+
+@app.route('/blog')
+def blog():
+    with open("/home/hassaanQadir/.virtualenvs/blog.txt") as blog:
+        return blog.read()
