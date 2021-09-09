@@ -41,18 +41,12 @@
   <a href="#about">About</a>
 </div>
 
-<h3>Input a Latitude, Longitude i.e. "56.380, -40.780":</h3>
-    <form method="POST">
-    <label for="location">i.e. "56.380, -40.780":</label>
-    <input type="text" id="location" name="location">
-    <input type="submit">
-</form>
-<br>
-<h3>Choose a procedure<h3/>
     <form method="post" action="/">
-        <input type="submit" value="Location: San Francisco" name="sanfrancisco" />
-		<input type="submit" value="Location: Los Angeles" name="losangeles" />
+		<label for="location">Input a Latitude, Longitude i.e. "56.380, -40.780"</label>
 		<br>
+        <input type="text" id="location" name="location">
+		<input type="submit" value="Update Location" name="update location">
+		<h3>Choose a procedure<h3/>
         <input type="submit" value="Emergency Room Visit Level 2 (low to moderate severity) 99282" name="99282"/>
 		<br>
 		<input type="submit" value="CT Scan Head or Brain, without contrast 70450" name="70450" />
