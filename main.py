@@ -7,8 +7,7 @@ import shutil
 from flask import Flask, render_template, request, redirect, url_for, session
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-from geopy import distance, Point
-
+from geopy import distance
 
 app = Flask(__name__)
 
@@ -191,7 +190,10 @@ def index(form="theform"):
 			return render_template('index.html', form=form)
 			pass
 		elif  request.form.get('update location'):
-		    userLocation = Point(request.form.get('location'))
+		    address = request.form.get('location')
+		    userLocator = Nominatim(user_agent="chargemaster_user")
+		    location = userLocator.geocode(address)
+		    userLocation = (location.latitude, location.longitude)
 		    inRange(userLocation)
 		    return render_template('index.html', form=form)
 		    pass
