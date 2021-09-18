@@ -157,34 +157,7 @@ def tabulate(command):
 def index(form="theform"):
 	#if a button is pressed, check which one it is
 	if request.method == 'POST':
-		#if 99282 is pressed, search for that CPT code
-		if request.form.get('99282'):
-			htmlTable = tabulate("99282")
-			session['htmlTable'] = htmlTable
-			return redirect(url_for("display"))
-			pass
-		#if 70450 is pressed, search for that CPT code and so on
-		elif  request.form.get('70450'):
-			htmlTable = tabulate("70450")
-			session['htmlTable'] = htmlTable
-			return redirect(url_for("display"))
-			pass
-		elif  request.form.get('74160'):
-			htmlTable = tabulate("74160")
-			session['htmlTable'] = htmlTable
-			return redirect(url_for("display"))
-			pass
-		elif  request.form.get('72193'):
-			htmlTable = tabulate("72193")
-			session['htmlTable'] = htmlTable
-			return redirect(url_for("display"))
-			pass
-		elif  request.form.get('80048'):
-			htmlTable = tabulate("80048")
-			session['htmlTable'] = htmlTable
-			return redirect(url_for("display"))
-			pass
-		elif  request.form.get('update'):
+		if  request.form.get('update'):
 			tabulate("update")
 			createLocationList()
 			return render_template('index.html', form=form)
@@ -197,9 +170,13 @@ def index(form="theform"):
 		    inRange(userLocation)
 		    return render_template('index.html', form=form)
 		    pass
-		elif  request.form.get('blog'):
-			return redirect(url_for("blog"))
-			pass
+		elif  request.form.get('search for procedure'):
+		    procedure = str(request.form.get('procedure'))
+		    procedureCode = procedure[-5:]
+		    htmlTable = tabulate(procedureCode)
+		    session['htmlTable'] = htmlTable
+		    return redirect(url_for("display"))
+		    pass
 	#if no button is pressed, show the buttons
 	elif request.method == 'GET':
 		return render_template('index.html', form=form)
