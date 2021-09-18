@@ -162,15 +162,12 @@ def index(form="theform"):
 			createLocationList()
 			return render_template('index.html', form=form)
 			pass
-		elif  request.form.get('update location'):
+		elif  request.form.get('search for procedure'):
 		    address = request.form.get('location')
 		    userLocator = Nominatim(user_agent="chargemaster_user")
 		    location = userLocator.geocode(address)
 		    userLocation = (location.latitude, location.longitude)
 		    inRange(userLocation)
-		    return render_template('index.html', form=form)
-		    pass
-		elif  request.form.get('search for procedure'):
 		    procedure = str(request.form.get('procedure'))
 		    procedureCode = procedure[-5:]
 		    htmlTable = tabulate(procedureCode)
