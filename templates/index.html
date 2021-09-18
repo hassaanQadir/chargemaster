@@ -35,32 +35,32 @@
 <body>
 
 <div class="topnav">
-  <a class="active" href="#home">Home</a>
-  <a href="#news">News</a>
+  <a class="active" href="/">Home</a>
+  <a href="/blog">Blog</a>
   <a href="#contact">Contact</a>
-  <a href="#about">About</a>
+  <a href="#About">About</a>
 </div>
 
     <form method="post" action="/">
-		<label for="location">Input an Address</label>
+		<label for="location">First Input an Address</label>
 		<br>
         <input type="text" id="location" name="location">
 		<input type="submit" value="Update Location" name="update location">
-		<h3>Choose a procedure<h3/>
-        <input type="submit" value="Emergency Room Visit Level 2 (low to moderate severity) 99282" name="99282"/>
 		<br>
-		<input type="submit" value="CT Scan Head or Brain, without contrast 70450" name="70450" />
+		<label for="procedure">Then Choose a procedure</label>
 		<br>
-        <input type="submit" value="CT Scan, Abodemen, with contrast 74160" name="74160" />
-		<br>
-		<input type="submit" value="CT Scan, Pelvis, with contrast 72193" name="72193" />
-		<br>
-		<input type="submit" value="Basic Metabolic Panel 80048" name="80048" />
-		<br>
-		<input type="submit" value="Blog" name="blog" />
+        <input type="text" id="procedure" name="procedure" list="procedures" />
+        <datalist id="procedures">
+          <option>Emergency Room Visit Level 2 (low to moderate severity) CPT: 99282</option>
+          <option>CT Scan Head or Brain, without contrast CPT: 70450</option>
+          <option>CT Scan, Abodemen, with contrast CPT: 74160</option>
+          <option>Basic Metabolic Panel CPT: 80048</option>
+        </datalist>
+        <input type="submit" value="Search for Procedure" name="search for procedure">
     </form>
 
 </div></form>
+
 
 </body>
 </html>
