@@ -203,9 +203,9 @@ def blog():
 	return render_template("blog.html")
 
 @app.route('/about')
-def blog():
+def about():
 	return render_template("index.html")
 
 @app.route('/contact')
-def blog():
+def contact():
 	return render_template("index.html")
