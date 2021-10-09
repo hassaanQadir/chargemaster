@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="/home/hassaanQadir/.virtualenvs/templates/styles.css" rel="stylesheet" />
+<style>
+ /* Add a black background color to the top navigation */
+.topnav {
+  background-color: blue;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: right;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ADD8E6;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #87CEEB;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="/">Home</a>
+  <a class="active" href="/blog">Blog</a>
+  <a href="/contact">Contact</a>
+  <a href="/about">About</a>
+</div>
+
+
+<h1>13 September 2021 Entry 2:</h1>
+
+<p>Hmm yeah have made no progress on user interviews. I spent about an hour over the last two weeks trying to find a source of users but found it difficult so I switched over to the more fun endeavor of writing code. Of course, I’m only writing code which I think I would like and I’m really not the target customer so this code is not tightly directed to actually solving problems so probability suggests I’m not writing the code that needs to be written at this moment.
+
+But the more realistic options for me are I either make some suboptimal progress because it’s fun or I make no optimal progress because that is not as intrinsically motivating at this moment. So I’m choosing the first.
+
+I have written some CSS. For some reason I haven’t been able to link the html to an external stylesheet, but I have added CSS, specifically a currently non-functional navigation bar at the top.
+
+More meaningfully, I have made it so that you can type in an address and click update location so that when you query a procedure you’ll get a ranked list of hospitals within a 30-mile radius of that address, which I imagine would be pretty useful to a user. Again, I don’t know because I haven’t talked to anyone who has the problem of struggling with unpredictable and near-extortionate hospital billing.
+
+Anyways, classes are starting to speed up. I’ve received callbacks from three a cappella choirs, which is great on one hand because I’ve really wanted to be part of a chamber choir for years, but on the other hand, if I do get it, I’m going to have to rearrange the sleep schedule and that’ll probably involve rearranging the chargemaster development schedule. Hmm inshallah it’ll work out.
+
+Actually I did talk to a guy whose dad seriously broke his leg in a workshop accident so they rushed him to the nearest hospital which ended up being out of network which caused them a lot of suffering. If you could get a comparison of hospitals by price based on your insurance weighted by distance to you, you could just choose between emergency, urgent, or planned hospital visit and it would tell you exactly where to go, about how long it would take to get there, and what the hospital claims to charge. That would be cool...
+
+To-dos for next week:
+Talk to at least one person who struggles with unpredictable hospital billing</p>
+
+
+<h1>30 August 2021 Entry 1:</h1>
+<p>
+
+Hello world! I'm Hassaan, the developer behind onlinechargemaster.com. Without any formal training, my coding experience mainly consists of learning by doing. Whether Online Chargemaster reaches product-market fit or not, the skills and experiences I gain will be invaluable.
+
+History so far:
+
+In January 2021, Medicare promulgated 45 CFR §180.50. This rule means that hospitals have to post a chargemaster, which is a list of procedures/services and associated charges.
+
+This was meant to bring about price transparency, and with that, competition and the lower prices which would ensue. However, there are many complicating factors.
+
+What we address is ease of access. Finding the chargemaster for each hospital is difficult, and parsing the file is taxing.
+
+My software lets user input a CPT code for a specific procedure and get a list of the hospitals in their area that offer that procedure, ranked by price.
+
+Forward Roadmap:
+
+Currently at the v1.0.0, there's still a lot of work left and a lot of features I want to implement. Here's a short list:
+<br>
+Customizable range for local area<br>
+Prettier interface<br>
+Expand from California<br>
+Parse wider variety of chargemaster formats<br>
+Hospital reviews and ratings<br>
+Information on codes/procedures
+<br>Different prices for insured patients
+<br>Typable CPT input
+Ability to input procedure in natural language<br>
+Related procedures suggested to user<br>
+Simplicate and add more lightness<br>
+
+Of course, user feedback and interviews are essential. However, I want to make it less ugly before showing it to users. Hmm how about by October I need to have talked to at least three potential users?
+
+But who are the users? Well, right now the problem I'm trying to solve is when people go to the hospital, they have no idea what it will cost until they get a magical bill in the mail. This problem falls heaviest on self-paying folks. There aren't many of those people, proportionally, but perhaps social media could help me find a group of them.
+
+Also, insurance companies may find use from this as well, as it tells them the cheapest hospital, but don't they already know?
+
+Well I don’t need to know everything. I’ve heard that, when making decisions, it’s best to optimize for learning. So what will quickly teach me the most?
+
+User interviews, I think.
+
+To do that, I need to first make the interface a bit less ugly. And I need to find possible users.
+
+Near-term action plan:
+Write some CSS by next Monday
+Have five interview options by next Monday
+
+Inshallah
+</p>
+
+
+
+
+
+</body>
+</html>
