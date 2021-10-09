@@ -90,6 +90,18 @@ def tabulate(command):
 		with ZipFile(r"%sCAChargemasterSavedFile.zip" % (env), "r") as targetZip:
 		   #Extract all the contents of zip file in current directory
 		   targetZip.extractall("")
+
+	#elif command == "pickl":
+	    #go through each excel file in a folder in Chargemaster CDM 2020
+	    #excelChargemasters = glob.glob(r"%sChargemaster CDM 2020/**/*.xlsx" % (env), recursive = True)
+
+	    #use each excel file to create a pickle file in the same folder
+	   # for excelChargemaster in excelChargemasters:
+	        #try:
+    		  #  pdChargemaster = pd.read_excel(excelChargemaster)
+    		  #  pdChargemaster.to_pickle(r"%sChargemaster CDM 2020/**/*.pkl" % (env))
+	       # except:
+    		 #   pass
 	else:
 		#a)we go through the extracted folder and, for every file that is in the inRangeHospitals folder, as well as another unspecified folder, and is an xlsx:
 		#b)for each chargemaster xlsx, we search for a sheet containing "1045"
@@ -183,9 +195,17 @@ def index(form="theform"):
 @app.route('/result')
 def display():
     htmlTable = session.get('htmlTable', None)
+    return render_template("result.html", table_html=htmlTable)
     return htmlTable
 
 @app.route('/blog')
 def blog():
-    with open("/home/hassaanQadir/.virtualenvs/blog.txt") as blog:
-        return blog.read()
+	return render_template("blog.html")
+
+@app.route('/about')
+def blog():
+	return render_template("index.html")
+
+@app.route('/contact')
+def blog():
+	return render_template("index.html")
