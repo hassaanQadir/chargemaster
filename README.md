@@ -5,7 +5,7 @@ Google account: chargemasteronline@gmail.com
 I have a version of this saved on Google's Cloud shell but I couldn't get it to work.
 
 Python Anywhere: hassaanQadir
-So I have it running off the Python Anywhere hacker plan at www.onlinechargemaster.com.
+So I have it running off the Python Anywhere hacker plan at hassaanQadir.pythonanywhere.com
 
 User goes to the website, it calls app.yaml which serves index.html. User chooses a location and a procedure with a CPT code. That code is passed to main.py which uses Flask, requests, and pandas.
 
