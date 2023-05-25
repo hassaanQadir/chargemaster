@@ -1,6 +1,6 @@
-# What is  onlinechargemaster.com?
+# What is the onlinechargemaster?
 
-This website allows users to search for a medical procedure and receive a list of nearby hospitals, ranked by price for that procedure. Currently functionality is limited to California and the website is pretty ugly, but if you're in California, we got your back!
+This website allows users in California to search for a medical procedure and receive a list of nearby hospitals, ranked by price for that procedure.
 
 
 # Notes on onlinechargemaster v1.0.0
