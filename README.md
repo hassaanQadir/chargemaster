@@ -14,7 +14,3 @@ main.py has the functionality to download and parse a list containing all of Cal
 main.py takes the CPT code and searches for every chargemaster from a hospital within a radius of the chosen location that contains that procedure. Each observation that matches is put into one dataframe that is ranked by price low-to-high. That dataframe is served as an html table on a different page.
 <br>
 <img width="960" alt="home page" src="https://user-images.githubusercontent.com/86531769/196276561-27069ec0-0146-4017-849f-8e20c31d9f65.png">
-<br>
-<img width="960" alt="searching" src="https://user-images.githubusercontent.com/86531769/196276572-88a4f7b4-6382-457c-b371-5cec7a9527dd.png">
-<br>
-<img width="960" alt="results" src="https://user-images.githubusercontent.com/86531769/196276595-0c6a8da9-f1ae-4b90-b534-cef746a1a06a.png">
