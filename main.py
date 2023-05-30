@@ -64,7 +64,7 @@ def inRange(userLocation):
 
     #populate inRangeHospitals folder with only the information of nearby hospitals for tabulate() to work with
     if os.path.exists(inRangeHospitals):
-        shutil.rmtree(inRangeHospitals)
+        shutil.rmtree(inRangeHospitals, ignore_errors=True)
     for j in range(len(nearbyHospitalNames)):
         shutil.copytree("Chargemaster CDM 2020/%s" % (nearbyHospitalNames[j]),"/home/hassaanQadir/.virtualenvs/inRangeHospitals/%s" % (j))
 
