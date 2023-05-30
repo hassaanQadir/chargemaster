@@ -3,44 +3,102 @@
 <head>
 <link href="/home/hassaanQadir/.virtualenvs/templates/styles.css" rel="stylesheet" />
 <style>
- /* Add a black background color to the top navigation */
-.topnav {
-  background-color: blue;
-  overflow: hidden;
-}
+  :root {
+    --primary-color: #0066cc;
+    --secondary-color: #f2f2f2;
+    --highlight-color: #ADD8E6;
+    --active-color: #87CEEB;
+    --font-size: 16px;
+    --padding: 14px 16px;
+  }
 
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: right;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary-color);
+    line-height: 1.5;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2em;
+  }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ADD8E6;
-  color: black;
-}
+  .topnav {
+    background-color: var(--primary-color);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding);
+  }
 
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #87CEEB;
-  color: white;
-}
+  header {
+    color: var(--secondary-color);
+    text-align: center;
+    font-size: calc(var(--font-size) * 1.2);
+    font-weight: bold;
+  }
+
+  .topnav a {
+    color: var(--secondary-color);
+    text-align: center;
+    padding: var(--padding);
+    text-decoration: none;
+    font-size: var(--font-size);
+    transition: background-color 0.5s ease;
+  }
+
+  .topnav a:hover {
+    background-color: var(--highlight-color);
+    color: black;
+  }
+
+  .topnav a.active {
+    background-color: var(--active-color);
+    color: white;
+  }
+
+  h1 {
+    font-size: 2em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    margin-bottom: 1em;
+  }
+
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  @media screen and (max-width: 600px) {
+    .topnav a {
+      display: block;
+      text-align: left;
+    }
+  }
 </style>
 </head>
 <body>
 
 <div class="topnav">
+  <header>Online Chargemaster Public Beta</header>
   <a href="/">Home</a>
   <a class="active" href="/blog">Blog</a>
   <a href="/contact">Contact</a>
   <a href="/about">About</a>
 </div>
 
+<h1>30 September 2022 Entry 4:</h1>
+<p>Well that was quite the year. Classes, clubs, friends; things get busy at college. I am unsure of if I will continue this. One of the professors told me about <a href="https://turquoise.health/">turquoise.health</a>, which seems to be doing what I'm doing but better. However, <a href="https://turquoise.health/">turquoise.health</a> is not perfect. It's been years since the chargemaster-transparency regulations, and while much has been done, little has been accomplished. Better men than me have tried and failed to untangle the Gordian knot. But someone's got to do it.
+</p>
 
 <h1>9 October 2021 Entry 3:</h1>
 <p>Nearly a month later, I have just made one step towards understanding my users. About an hour ago, I sent emails to 14 Yale professors in the public health space, asking for a 15 minute conversation. One professor has invited me to his office hours in two days. Another gave me a wonderful list of websites that do price comparisons and reports dealing with this topic, plus an email of someone else who could help me more. Alhamdullillah! Wonderful stuff. It’s almost 8 PM, so I must go to sleep soon but that’s good progress.
