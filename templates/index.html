@@ -3,38 +3,102 @@
 <head>
 <link href="/home/hassaanQadir/.virtualenvs/templates/styles.css" rel="stylesheet" />
 <style>
- /* Add a black background color to the top navigation */
-.topnav {
-  background-color: blue;
-  overflow: hidden;
-}
+  :root {
+    --primary-color: #0066cc;
+    --secondary-color: #f2f2f2;
+    --highlight-color: #ADD8E6;
+    --active-color: #87CEEB;
+    --font-size: 16px;
+    --padding: 14px 16px;
+  }
 
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: right;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary-color);
+  }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ADD8E6;
-  color: black;
-}
+  .topnav {
+    background-color: var(--primary-color);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding);
+  }
 
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #87CEEB;
-  color: white;
-}
+  header {
+    color: var(--secondary-color);
+    text-align: center;
+    font-size: calc(var(--font-size) * 1.2);
+    font-weight: bold;
+  }
+
+  .topnav a {
+    color: var(--secondary-color);
+    text-align: center;
+    padding: var(--padding);
+    text-decoration: none;
+    font-size: var(--font-size);
+    transition: background-color 0.5s ease;
+  }
+
+  .topnav a:hover {
+    background-color: var(--highlight-color);
+    color: black;
+  }
+
+  .topnav a.active {
+    background-color: var(--active-color);
+    color: white;
+  }
+
+  form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  form input[type="text"], form datalist {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+  }
+
+  form input[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+  }
+
+  form input[type="submit"]:hover {
+    background-color: var(--active-color);
+  }
+
+  @media screen and (max-width: 600px) {
+    .topnav a {
+      display: block;
+      text-align: left;
+    }
+
+    form {
+      padding: 10px;
+    }
+  }
 </style>
+
 </head>
 <body>
 
 <div class="topnav">
+    <header>Online Chargemaster Public Beta</header>
   <a class="active" href="/">Home</a>
   <a href="/blog">Blog</a>
   <a href="/contact">Contact</a>
@@ -42,7 +106,7 @@
 </div>
 
     <form method="post" action="/">
-		<label for="location">First Input an Address (Currently Limited to California)</label>
+		<label for="location">First Input a California Address</label>
 		<br>
         <input type="text" id="location" name="location">
 		<br>
@@ -62,6 +126,7 @@
          <option>Comprehensive Metabolic Panel CPT: 80053</option>
          <option>Creatine Kinase (CK), (CPK), Total CPT: 82550</option>
          <option>Lipid Panel CPT: 80061</option>
+         <!--
          <option>Partial Thromboplastin Time CPT: 85730</option>
          <option>Prothrombin Time CPT: 85610</option>
          <option>Thyroid Stimulating Hormone CPT: 84443</option>
@@ -106,6 +171,7 @@
          <option>Laparoscopic Cholecystectomy CPT: 47562</option>
          <option>Tympanostomy (insert ventilating  tube, general anesthesia) CPT: 69436</option>
          <option>Tonsillectomy with Adenoidectomy, less than 12 years old CPT: 42820</option>
+         -->
         </datalist>
         <br>
         <br>
