@@ -157,7 +157,10 @@ def tabulate(command):
 					print("Skipping " + thisChargemaster[-70:-20])
 					pass
 		#k)
-		allObservations = allObservations.sort_values(by="Charge", ascending=True,ignore_index=True)
+		if "Charge" in allObservations.columns:
+		    allObservations = allObservations.sort_values(by="Charge", ascending=True, ignore_index=True)
+		else:
+		    pass
 		allObservations = allObservations.dropna()
 		print(allObservations)
 		#l)
